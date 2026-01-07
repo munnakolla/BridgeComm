@@ -1,0 +1,186 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "appName": {
+      "type": "string",
+      "defaultValue": "bridgecomm-api",
+      "metadata": {
+        "description": "Name of the App Service"
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Azure region for deployment"
+      }
+    },
+    "sku": {
+      "type": "string",
+      "defaultValue": "B1",
+      "allowedValues": ["B1", "B2", "B3", "S1", "S2", "S3", "P1v2", "P2v2", "P3v2"],
+      "metadata": {
+        "description": "App Service Plan SKU"
+      }
+    },
+    "azureSpeechKey": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Azure Speech Services API Key"
+      }
+    },
+    "azureSpeechRegion": {
+      "type": "string",
+      "defaultValue": "eastus",
+      "metadata": {
+        "description": "Azure Speech Services Region"
+      }
+    },
+    "azureOpenAIEndpoint": {
+      "type": "string",
+      "metadata": {
+        "description": "Azure OpenAI Endpoint URL"
+      }
+    },
+    "azureOpenAIKey": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Azure OpenAI API Key"
+      }
+    },
+    "azureOpenAIDeployment": {
+      "type": "string",
+      "defaultValue": "gpt-4",
+      "metadata": {
+        "description": "Azure OpenAI Deployment Name"
+      }
+    },
+    "storageConnectionString": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Azure Storage Connection String"
+      }
+    },
+    "cosmosEndpoint": {
+      "type": "string",
+      "metadata": {
+        "description": "Azure Cosmos DB Endpoint"
+      }
+    },
+    "cosmosKey": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Azure Cosmos DB Key"
+      }
+    }
+  },
+  "variables": {
+    "appServicePlanName": "[concat(parameters('appName'), '-plan')]",
+    "appInsightsName": "[concat(parameters('appName'), '-insights')]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Web/serverfarms",
+      "apiVersion": "2022-03-01",
+      "name": "[variables('appServicePlanName')]",
+      "location": "[parameters('location')]",
+      "kind": "linux",
+      "sku": {
+        "name": "[parameters('sku')]"
+      },
+      "properties": {
+        "reserved": true
+      }
+    },
+    {
+      "type": "Microsoft.Insights/components",
+      "apiVersion": "2020-02-02",
+      "name": "[variables('appInsightsName')]",
+      "location": "[parameters('location')]",
+      "kind": "web",
+      "properties": {
+        "Application_Type": "web"
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2022-03-01",
+      "name": "[parameters('appName')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]",
+        "[resourceId('Microsoft.Insights/components', variables('appInsightsName'))]"
+      ],
+      "properties": {
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]",
+        "siteConfig": {
+          "linuxFxVersion": "PYTHON|3.11",
+          "appCommandLine": "uvicorn app.main:app --host 0.0.0.0 --port 8000",
+          "alwaysOn": true,
+          "appSettings": [
+            {
+              "name": "AZURE_SPEECH_KEY",
+              "value": "[parameters('azureSpeechKey')]"
+            },
+            {
+              "name": "AZURE_SPEECH_REGION",
+              "value": "[parameters('azureSpeechRegion')]"
+            },
+            {
+              "name": "AZURE_OPENAI_ENDPOINT",
+              "value": "[parameters('azureOpenAIEndpoint')]"
+            },
+            {
+              "name": "AZURE_OPENAI_API_KEY",
+              "value": "[parameters('azureOpenAIKey')]"
+            },
+            {
+              "name": "AZURE_OPENAI_DEPLOYMENT_NAME",
+              "value": "[parameters('azureOpenAIDeployment')]"
+            },
+            {
+              "name": "AZURE_STORAGE_CONNECTION_STRING",
+              "value": "[parameters('storageConnectionString')]"
+            },
+            {
+              "name": "AZURE_COSMOS_ENDPOINT",
+              "value": "[parameters('cosmosEndpoint')]"
+            },
+            {
+              "name": "AZURE_COSMOS_KEY",
+              "value": "[parameters('cosmosKey')]"
+            },
+            {
+              "name": "AZURE_COSMOS_DATABASE_NAME",
+              "value": "bridgecomm"
+            },
+            {
+              "name": "AZURE_COSMOS_CONTAINER_NAME",
+              "value": "users"
+            },
+            {
+              "name": "APP_SECRET_KEY",
+              "value": "[uniqueString(resourceGroup().id)]"
+            },
+            {
+              "name": "APP_DEBUG",
+              "value": "false"
+            },
+            {
+              "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+              "value": "[reference(resourceId('Microsoft.Insights/components', variables('appInsightsName'))).InstrumentationKey]"
+            }
+          ]
+        },
+        "httpsOnly": true
+      }
+    }
+  ],
+  "outputs": {
+    "appServiceUrl": {
+      "type": "string",
+      "value": "[concat('https://', parameters('appName'), '.azurewebsites.net')]"
+    }
+  }
+}

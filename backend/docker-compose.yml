@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  bridgecomm-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bridgecomm-api
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - APP_DEBUG=true
+    volumes:
+      - ./app:/app/app:ro  # Mount for development (read-only)
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # Optional: Redis for caching (uncomment if needed)
+  # redis:
+  #   image: redis:7-alpine
+  #   container_name: bridgecomm-redis
+  #   ports:
+  #     - "6379:6379"
+  #   restart: unless-stopped
+  #   volumes:
+  #     - redis_data:/data
+
+# volumes:
+#   redis_data:

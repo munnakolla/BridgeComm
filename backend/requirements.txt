@@ -1,0 +1,47 @@
+# Azure Backend Requirements for BridgeComm AI System
+# Core Framework
+fastapi==0.109.2
+uvicorn[standard]==0.27.1
+python-multipart==0.0.9
+pydantic==2.6.1
+pydantic-settings==2.2.1
+
+# Azure SDK
+azure-cognitiveservices-speech==1.35.0
+azure-storage-blob==12.19.0
+azure-cosmos==4.5.1
+azure-identity==1.15.0
+azure-keyvault-secrets==4.7.0
+azure-ai-textanalytics==5.3.0
+openai==1.12.0
+
+# ML & AI - Sign Language Recognition
+numpy==1.26.4
+opencv-python-headless==4.9.0.80
+mediapipe==0.10.9
+Pillow==10.2.0
+torch==2.2.0
+torchvision==0.17.0
+scikit-learn==1.4.0
+pydub==0.25.1
+openai-whisper  # Local speech-to-text (FREE)
+gtts  # Google Text-to-Speech (FREE)
+
+# Video Processing (for sign language)
+av>=12.0.0  # PyAV for video decoding
+
+# SignVLM specific dependencies
+# Note: torch and torchvision already included above
+# CLIP backbone will be downloaded separately
+
+# Utilities
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+httpx==0.26.0
+aiofiles==23.2.1
+python-dotenv==1.0.1
+redis==5.0.1
+
+# Testing
+pytest==8.0.0
+pytest-asyncio==0.23.4

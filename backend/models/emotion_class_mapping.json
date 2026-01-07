@@ -1,0 +1,29 @@
+{
+  "class_indices": {
+    "angry": 0,
+    "disgust": 1,
+    "fear": 2,
+    "happy": 3,
+    "sad": 4,
+    "surprise": 5,
+    "neutral": 6
+  },
+  "index_to_class": {
+    "0": "angry",
+    "1": "disgust",
+    "2": "fear",
+    "3": "happy",
+    "4": "sad",
+    "5": "surprise",
+    "6": "neutral"
+  },
+  "emotion_responses": {
+    "angry": "I sense frustration. How can I help?",
+    "disgust": "Something seems unpleasant. Let me assist.",
+    "fear": "You seem worried. I'm here to help.",
+    "happy": "Great to see you in good spirits!",
+    "neutral": "How can I assist you today?",
+    "sad": "I'm sorry you're feeling down. How can I help?",
+    "surprise": "Something unexpected? Let me know what you need."
+  }
+}
