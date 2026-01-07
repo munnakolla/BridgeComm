@@ -210,12 +210,6 @@ python -m app.core.startup_checks
 
 ---
 
-## 📄 License
-
-This project is licensed under the MIT License.
-
----
-
 ## 🙏 Acknowledgments
 
 - [ARASAAC](https://arasaac.org/) - AAC Symbols
