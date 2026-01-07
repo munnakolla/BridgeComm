@@ -21,14 +21,14 @@ from app.services import (
 )
 from app.services.gesture_sequence_service import get_gesture_session, clear_gesture_session
 
-# Gesture to text/intent mapping for when no AI is available
+# Gesture to text/intent mapping - CLEAR AND CONSISTENT
 GESTURE_MAPPINGS = {
-    "Thumb_Up": {"text": "Good / Yes / Okay", "intent": "affirmative"},
-    "Thumb_Down": {"text": "Bad / No / Disagree", "intent": "negative"},
-    "Open_Palm": {"text": "Stop / Hello / Wait", "intent": "greeting"},
-    "Closed_Fist": {"text": "Yes / Agree / Power", "intent": "affirmative"},
-    "Victory": {"text": "Peace / Victory / Two", "intent": "positive"},
-    "Pointing_Up": {"text": "Attention / Look / One", "intent": "direction"},
+    "Thumb_Up": {"text": "Good", "intent": "positive"},
+    "Thumb_Down": {"text": "No", "intent": "negative"},
+    "Open_Palm": {"text": "Hello", "intent": "greeting"},
+    "Closed_Fist": {"text": "Yes", "intent": "affirmative"},
+    "Victory": {"text": "Peace", "intent": "positive"},
+    "Pointing_Up": {"text": "Look", "intent": "attention"},
     "ILoveYou": {"text": "I love you", "intent": "affection"},
     "None": {"text": "No clear gesture detected", "intent": "no_gesture"},
 }

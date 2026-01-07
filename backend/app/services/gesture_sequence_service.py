@@ -24,69 +24,42 @@ class GestureSequenceAnalyzer:
         self.min_confidence = min_confidence
         self.gesture_history: deque = deque(maxlen=30)  # Last 30 gestures for better context
         
-        # Gesture to word mappings - expanded vocabulary
+        # Gesture to single word mappings - CLEAR AND CONSISTENT
         self.gesture_words = {
-            "Thumb_Up": "yes",
+            # MediaPipe gestures - single clear words
+            "Thumb_Up": "good",
             "Thumb_Down": "no",
-            "Open_Palm": "stop",
-            "Closed_Fist": "agree",
+            "Open_Palm": "hello",
+            "Closed_Fist": "yes",
             "Victory": "peace",
-            "Pointing_Up": "attention",
+            "Pointing_Up": "look",
             "ILoveYou": "love you",
-            # Common sign language phrases
+            # Additional gestures
             "wave": "hello",
             "wave_goodbye": "goodbye",
-            "prayer_hands": "thank you",
             "ok_sign": "okay",
             "raise_hand": "help",
-            # Additional gestures for better communication
-            "clap": "good job",
-            "fist_bump": "agreement",
-            "crossed_arms": "no way",
-            "shrug": "don't know",
-            "point_left": "that way",
-            "point_right": "this way",
-            "point_down": "below",
-            "phone_gesture": "call me",
-            "time_check": "what time",
-            "money_gesture": "money",
-            "eating_gesture": "hungry",
-            "drinking_gesture": "thirsty",
-            "sleeping_gesture": "tired",
         }
         
-        # Gesture sequences that form phrases - expanded patterns
+        # Gesture sequences that form natural phrases
         self.gesture_phrases = {
             # Greetings
-            ("wave", "Open_Palm"): "Hello, how are you?",
-            ("wave", "Thumb_Up"): "Hello, I'm good",
-            ("wave", "ILoveYou"): "Hello, nice to see you",
-            # Requests and needs
-            ("Pointing_Up", "Open_Palm"): "Look at this",
-            ("Open_Palm", "Closed_Fist"): "Please help me",
-            ("raise_hand", "Open_Palm"): "I need help please",
-            ("eating_gesture", "Thumb_Up"): "I'm hungry",
-            ("drinking_gesture", "Thumb_Up"): "I'm thirsty",
-            ("sleeping_gesture", "Closed_Fist"): "I'm very tired",
-            # Agreements and disagreements
-            ("Thumb_Up", "Thumb_Up"): "Very good",
-            ("Thumb_Up", "Closed_Fist"): "I completely agree",
-            ("Thumb_Down", "Closed_Fist"): "I disagree strongly",
-            ("Thumb_Down", "Open_Palm"): "No, please stop",
-            ("crossed_arms", "Thumb_Down"): "Absolutely not",
+            ("Open_Palm", "Thumb_Up"): "Hello, good to see you!",
+            ("Open_Palm", "ILoveYou"): "Hello, I love you!",
+            # Requests
+            ("Pointing_Up", "Open_Palm"): "Look at this, please.",
+            ("Open_Palm", "Closed_Fist"): "Please help me.",
+            # Agreements
+            ("Thumb_Up", "Thumb_Up"): "Very good!",
+            ("Thumb_Up", "Closed_Fist"): "I agree!",
+            ("Thumb_Down", "Closed_Fist"): "I disagree.",
+            ("Thumb_Down", "Open_Palm"): "No, please stop.",
             # Farewells
-            ("ILoveYou", "wave"): "I love you, goodbye",
-            ("prayer_hands", "wave"): "Thank you, goodbye",
-            ("Thumb_Up", "wave"): "Okay, goodbye",
-            ("wave_goodbye", "ILoveYou"): "Goodbye, love you",
-            # Questions and uncertainty
-            ("shrug", "Open_Palm"): "I don't know, sorry",
-            ("Pointing_Up", "time_check"): "What time is it?",
-            ("point_left", "Pointing_Up"): "Is it over there?",
-            # Complex interactions
-            ("phone_gesture", "Thumb_Up"): "Call me later",
-            ("money_gesture", "Thumb_Down"): "Too expensive",
-            ("Victory", "Thumb_Up"): "Peace and love",
+            ("ILoveYou", "Open_Palm"): "I love you, goodbye!",
+            ("Thumb_Up", "Open_Palm"): "Okay, goodbye!",
+            # Combined expressions
+            ("Victory", "Thumb_Up"): "Peace and love!",
+            ("Victory", "ILoveYou"): "Peace and love!",
         }
     
     def add_gesture(self, gesture: str, confidence: float, timestamp: Optional[datetime] = None) -> None:

@@ -15,10 +15,22 @@ from pathlib import Path
 from typing import Dict, Any, List, Optional, Tuple
 import numpy as np
 
-# PyTorch imports - required for nn.Module class definitions
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
+# PyTorch imports - lazy loaded since not always needed
+torch = None
+nn = None
+F = None
+PYTORCH_AVAILABLE = False
+
+try:
+    import torch as torch_import
+    import torch.nn as nn_import
+    import torch.nn.functional as F_import
+    torch = torch_import
+    nn = nn_import
+    F = F_import
+    PYTORCH_AVAILABLE = True
+except ImportError:
+    print("Warning: PyTorch not available. Video-based sign language recognition will be disabled.")
 
 from .config import get_config, load_vocabulary, MODELS_DIR
 

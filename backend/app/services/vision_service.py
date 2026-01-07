@@ -110,24 +110,35 @@ class VisionService:
         self.asl_gesture_service = asl_gesture_service
         self.settings = get_settings()
         
-        # Gesture mappings for sign language interpretation
+        # Gesture mappings - clear, single meanings for consistent output
         self.gesture_to_text = {
-            # MediaPipe Gesture Recognizer outputs
+            # MediaPipe Gesture Recognizer outputs - SINGLE clear meaning
             "None": "No gesture detected",
-            "Closed_Fist": "Yes / Agree / Power",
-            "Open_Palm": "Stop / Hello / Wait",
-            "Pointing_Up": "Attention / Up / One",
-            "Thumb_Down": "No / Bad / Disagree",
-            "Thumb_Up": "Good / Okay / Yes",
-            "Victory": "Peace / Victory / Two",
+            "Closed_Fist": "Yes",
+            "Open_Palm": "Hello",
+            "Pointing_Up": "Look",
+            "Thumb_Down": "No",
+            "Thumb_Up": "Good",
+            "Victory": "Peace",
             "ILoveYou": "I love you",
             # Fallback mappings
-            "open_hand": "Hello / Stop",
-            "fist": "Yes / Agree",
-            "pointing": "That / There",
-            "peace": "Peace / Two / Victory",
-            "thumbs_up": "Good / Okay / Yes",
-            "thumbs_down": "Bad / No / Disagree",
+            "open_hand": "Hello",
+            "fist": "Yes",
+            "pointing": "There",
+            "peace": "Peace",
+            "thumbs_up": "Good",
+            "thumbs_down": "No",
+        }
+        
+        # More detailed gesture descriptions (for UI display, not for sentence formation)
+        self.gesture_descriptions = {
+            "Closed_Fist": "Fist gesture - indicates agreement or emphasis",
+            "Open_Palm": "Open palm - greeting or stop gesture",
+            "Pointing_Up": "Pointing up - calling attention",
+            "Thumb_Down": "Thumbs down - disagreement or negative",
+            "Thumb_Up": "Thumbs up - approval or positive",
+            "Victory": "Peace sign / V sign",
+            "ILoveYou": "ASL 'I Love You' sign",
         }
         
         self.gesture_recognizer = gesture_recognizer
