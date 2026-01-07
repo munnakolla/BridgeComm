@@ -237,7 +237,7 @@ Extract up to 10 meaningful keywords. Return keywords in the order they appear i
                     f"{self.BASE_URL}/chat/completions",
                     headers=self._get_headers(),
                     json={
-                        "model": "llama3-8b-8192",  # Fast model
+                        "model": "llama-3.1-8b-instant",  # Fast model (updated from deprecated llama3-8b-8192)
                         "messages": messages,
                         "temperature": 0.3,  # More deterministic
                         "max_tokens": 500,
@@ -386,7 +386,7 @@ User's detected emotion: {user_emotion or 'neutral'}
                     f"{self.BASE_URL}/chat/completions",
                     headers=self._get_headers(),
                     json={
-                        "model": "llama3-8b-8192",
+                        "model": "llama-3.1-8b-instant",
                         "messages": messages,
                         "temperature": 0.7,
                         "max_tokens": 100,
@@ -408,7 +408,7 @@ User's detected emotion: {user_emotion or 'neutral'}
         messages: List[Dict[str, str]],
         max_tokens: int = 100,
         temperature: float = 0.7,
-        model: str = "llama3-8b-8192"
+        model: str = "llama-3.1-8b-instant"
     ) -> Dict[str, Any]:
         """
         General chat completion endpoint.
